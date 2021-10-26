@@ -4,18 +4,6 @@ package keys
 
 import "zgo.at/termfo/caps"
 
-// TODO?
-// Control characters.
-// const (
-// 	CCNull       = Key(0x00) // NUL
-// 	CCBackspace  = Key(0x08) // BS
-// 	CCTab        = Key(0x09) // HT
-// 	CCLinefeed   = Key(0x0a) // LF
-// 	CCEnter      = Key(0x0d) // CR
-// 	CCEsc        = Key(0x1b) // ESC
-// 	CCBackspace2 = Key(0x7f) // DEL
-// )
-
 // CursesVersion is the version of curses this data was generated with, as [implementation]-[version].
 const CursesVersion = `ncurses-6.2.20211009`
 

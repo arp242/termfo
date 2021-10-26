@@ -172,7 +172,6 @@ keys() {
 			ignore["Il"]      = "InsertLine"
 			ignore["Sr"]      = "ScrollBackward"      # \E[1;2A, or Shift+Up; don't need an entry for this.
 			ignore["Sf"]      = "ScrollForward"       # \E[1;2B, or Shift+Down
-			ignore["Btab"]    = "BackTab"             # \E[Z, or Shift+Tab
 			ignore["Clear"]   = "ClearScreen"         # \E[2J
 			ignore["F0"]      = "F0"
 			ignore["Ll"]      = "LowerLeft"           # "Home down"
@@ -225,6 +224,7 @@ keys() {
 			rename["Dc"]    = "Delete"     # \E[3~
 			rename["Ppage"] = "PageUp"     # \E[5~
 			rename["Npage"] = "PageDown"   # \E[6~
+			rename["Btab"]  = "BackTab"    # \E[Z (Shift+Tab)
 		}
 
 		/^[^#]/ && $3 == "str" {

@@ -15,6 +15,13 @@ const (
 	modmask = Shift | Ctrl | Alt
 )
 
+// Common control sequences better known by their name than letter+Ctrl
+// combination.
+const (
+	Tab    = 'i' | Ctrl
+	Escape = '[' | Ctrl
+)
+
 // Key represents a keypress. This is formatted as follows:
 //
 //   - First 32 bits   → rune (int32)
@@ -87,7 +94,7 @@ func (k Key) Alt() bool { return k&Alt != 0 }
 func (k Key) WithoutMods() Key { return k &^ modmask }
 
 // Valid reports if this key is valid.
-func (k Key) Valid() bool { return k&^modmask <= (1<<31) || k.Named() }
+func (k Key) Valid() bool { return k&^modmask <= 1<<31 || k.Named() }
 
 // Named reports if this is a named key.
 func (k Key) Named() bool {
@@ -124,13 +131,22 @@ func (k Key) String() string {
 	if k.Shift() {
 		b.WriteString("S-")
 	}
-	if k.Ctrl() {
-		b.WriteString("C-")
-	}
 	if k.Alt() {
 		b.WriteString("A-")
 	}
-	b.WriteString(k.Name())
+
+	switch k {
+	case Tab:
+		b.WriteString("Tab")
+	case Escape:
+		b.WriteString("Esc")
+	default:
+		if k.Ctrl() {
+			b.WriteString("C-")
+		}
+		b.WriteString(k.Name())
+	}
+
 	b.WriteRune('>')
 	return b.String()
 }

@@ -256,6 +256,11 @@ func (ti Terminfo) FindKey(b []byte) (keys.Key, int) {
 		}
 	}
 
+	// Single \E
+	if len(b) == 1 {
+		return keys.Escape, 1
+	}
+
 	// Exact match.
 	k, ok := ti.Keys[string(b)]
 	if ok {
@@ -275,6 +280,5 @@ func (ti Terminfo) FindKey(b []byte) (keys.Key, int) {
 	if len(b) == 2 {
 		return keys.Key(b[1]) | keys.Alt, 2
 	}
-	return 0, len(b)
 	return keys.UnknownSequence, len(b)
 }

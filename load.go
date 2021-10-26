@@ -94,7 +94,6 @@ func fromPath(term, path string) (*Terminfo, *os.File, error) {
 	// 68/xterm; as used on Darwin/macOS.
 	fp, err = os.Open(path + "/" + hex.EncodeToString([]byte(term[:1])) + "/" + term)
 	return nil, fp, err
-
 }
 
 func readTi(fp *os.File) (*Terminfo, error) {
