@@ -45,18 +45,18 @@ type Terminfo struct {
 //
 // It tries to load a terminfo file according to these rules:
 //
-//   1. Use the path in TERMINFO if it's set and don't search any other
-//      locations.
+//  1. Use the path in TERMINFO if it's set and don't search any other
+//     locations.
 //
-//   2. Try built-in ones unless set NO_BUILTIN_TERMINFO is set.
+//  2. Try built-in ones unless set NO_BUILTIN_TERMINFO is set.
 //
-//   3. Try ~/.terminfo/ as the database path.
+//  3. Try ~/.terminfo/ as the database path.
 //
-//   4. Look in the paths listed in TERMINFO_DIRS.
+//  4. Look in the paths listed in TERMINFO_DIRS.
 //
-//   5. Look in /lib/terminfo/
+//  5. Look in /lib/terminfo/
 //
-//   6. Look in /usr/share/terminfo/
+//  6. Look in /usr/share/terminfo/
 //
 // These are the same rules as ncurses, except that step 2 was added.
 //
@@ -111,6 +111,7 @@ func New(term string) (*Terminfo, error) {
 		ti.Keys["\x1bOD"] = keys.Left
 		ti.Keys["\x1bOH"] = keys.Home
 	}
+
 	for seq, k := range ti.Keys {
 		addModifierKeys(ti, seq, k)
 	}
@@ -221,39 +222,7 @@ func (ti Terminfo) FindKey(b []byte) (keys.Key, int) {
 
 	// No escape sequence.
 	if b[0] != 0x1b {
-		// TODO: we probably want to use rivo/uniseg here; otherwise something
-		// like:
-		//
-		//     U+1F3F4 (🏴) U+200D U+2620 (☠️)
-		//
-		// will be sent as three characters, rather than one. It should be the
-		// "pirate flag" emoji.
-		//
-		// Actually, this kinda sucks because this is where my clever "encode
-		// everything in a uint64!"-scheme kind of breaks down, since this can't
-		// be represented by that.
-		//
-		// Perhaps change the return signature to (Key, string, int), and then
-		// send a special MultiCodepoint as the Key? I don't know...
-		//
-		// Or maybe just don't support it. Many applications will work just fine
-		// anyway; e.g. if you print text it will just output those three bytes
-		// and it's all grand, and modifiers aren't sent with that in the first
-		// place.
-		r, n := utf8.DecodeRune(b)
-
-		switch {
-		case r == 0x7f:
-			return keys.Backspace, n
-		case r == 0x0d:
-			return keys.Enter, n
-		case r < 0x1f:
-			return keys.Key(r) | 0x20 | 0x40 | keys.Ctrl, n
-		case r >= 'A' && r <= 'Z':
-			return keys.Key(r) ^ 0x20 | keys.Shift, n
-		default:
-			return keys.Key(r), n
-		}
+		return toKey(b)
 	}
 
 	// Single \E
@@ -275,10 +244,44 @@ func (ti Terminfo) FindKey(b []byte) (keys.Key, int) {
 	}
 
 	// Alt keys are sent as \Ek.
-	// TODO: I think this depends on the "mode"? Xterm has settings for it
-	// anyway.
+	// TODO: I think this depends on the "mode"? Xterm has settings for it anyway.
 	if len(b) == 2 {
-		return keys.Key(b[1]) | keys.Alt, 2
+		k, _ := toKey(b[1:])
+		return k | keys.Alt, 2
 	}
 	return keys.UnknownSequence, len(b)
+}
+
+func toKey(b []byte) (keys.Key, int) {
+	// TODO: we probably want to use rivo/uniseg here; otherwise something like:
+	//
+	//     U+1F3F4 (🏴) U+200D U+2620 (☠️)
+	//
+	// will be sent as three characters, rather than one. It should be the
+	// "pirate flag" emoji.
+	//
+	// Actually, this kinda sucks because this is where my clever "encode
+	// everything in a uint64!"-scheme kind of breaks down, since this can't be
+	// represented by that.
+	//
+	// Perhaps change the return signature to (Key, string, int), and then send
+	// a special MultiCodepoint as the Key? I don't know...
+	//
+	// Or maybe just don't support it. Many applications will work just fine
+	// anyway; e.g. if you print text it will just output those three bytes and
+	// it's all grand, and modifiers aren't sent with that in the first place.
+	r, n := utf8.DecodeRune(b)
+	switch {
+	case r == 0x7f:
+		return keys.Backspace, n
+	case r == 0x0d:
+		return keys.Enter, n
+	case r < 0x1f:
+		return keys.Key(r) | 0x20 | 0x40 | keys.Ctrl, n
+	case r >= 'A' && r <= 'Z':
+		return keys.Key(r) ^ 0x20 | keys.Shift, n
+	default:
+		return keys.Key(r), n
+	}
+
 }

@@ -37,18 +37,18 @@ var commonTerms = []string{
 //
 // TODO: change to:
 //
-// func init() {
-// 	termfo.Loaders = append(termfo.Loaders, func(t string) *termfo.Terminfo {
-// 		switch t {
-// 		case "foo":
-// 			extMap := ""
-// 			return &termfo.Terminfo{}
+//	func init() {
+//		termfo.Loaders = append(termfo.Loaders, func(t string) *termfo.Terminfo {
+//			switch t {
+//			case "foo":
+//				extMap := ""
+//				return &termfo.Terminfo{}
 //
-// 		case "bar":
-// 			// ...
-// 		}
-// 	})
-// }
+//			case "bar":
+//				// ...
+//			}
+//		})
+//	}
 func build(pkg string, terms ...string) {
 	for i, t := range terms {
 		if t == "%common" {

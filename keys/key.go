@@ -37,39 +37,41 @@ const (
 // The upshot of this is that you can now use a single value to test for all
 // combinations:
 //
-//    switch Key(0x61) {
-//    case 'a':                           // 'a' w/o modifiers
-//    case 'a' | keys.Ctrl:               // 'a' with control
-//    case 'a' | keys.Ctrl | keys.Shift:  // 'a' with shift and control
+//	switch Key(0x61) {
+//	case 'a':                           // 'a' w/o modifiers
+//	case 'a' | keys.Ctrl:               // 'a' with control
+//	case 'a' | keys.Ctrl | keys.Shift:  // 'a' with shift and control
 //
-//    case keys.Up:                       // Arrow up
-//    case keys.Up | keys.Ctrl:           // Arrow up with control
-//    }
+//	case keys.Up:                       // Arrow up
+//	case keys.Up | keys.Ctrl:           // Arrow up with control
+//	}
 //
 // Which is nicer than using two or three different variables to signal various
 // things.
 //
+// Letters are always in lower-case; the keys.Shift to test for upper case.
+//
 // Control sequences (0x00-0x1f, 0x1f), are used sent as key + Ctrl. So this:
 //
-//   switch k {
-//   case 0x09:
-//   }
+//	switch k {
+//	case 0x09:
+//	}
 //
 // Won't work. you need to use:
 //
-//   switch k {
-//   case 'i' | key.Ctrl:
-//   }
+//	switch k {
+//	case 'i' | key.Ctrl:
+//	}
 //
 // Or better yet:
 //
-//   ti := termfo.New("")
+//	ti := termfo.New("")
 //
-//   ...
+//	...
 //
-//   switch k {
-//   case ti.Keys[keys.Tab]:
-//   }
+//	switch k {
+//	case ti.Keys[keys.Tab]:
+//	}
 //
 // This just makes more sense, because people press "<C-a>" not "Start of
 // heading".
@@ -118,16 +120,32 @@ func (k Key) Name() string {
 		return fmt.Sprintf("Invalid UTF-8: 0x%x", rune(k))
 	}
 
-	if k == ' ' { // TODO: maybe also other spaces like nbsp etc?
+	// TODO: maybe also other spaces like nbsp etc?
+	switch k {
+	case ' ':
 		return "Space"
+	case '\t':
+		return "Tab"
+	case Escape:
+		return "Esc"
 	}
 	return fmt.Sprintf("%c", rune(k))
 }
 
 func (k Key) String() string {
-	var b strings.Builder
+	var (
+		hasMod = k.Ctrl() || k.Shift() || k.Alt()
+		name   = k.Name()
+		named  = utf8.RuneCountInString(name) > 1
+		b      strings.Builder
+	)
+
 	b.Grow(8)
-	b.WriteRune('<')
+
+	if hasMod || named {
+		b.WriteRune('<')
+	}
+
 	if k.Shift() {
 		b.WriteString("S-")
 	}
@@ -147,6 +165,8 @@ func (k Key) String() string {
 		b.WriteString(k.Name())
 	}
 
-	b.WriteRune('>')
+	if hasMod || named {
+		b.WriteRune('>')
+	}
 	return b.String()
 }

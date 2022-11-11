@@ -49,6 +49,7 @@ var TableBools = []*Cap{
 	ReturnDoesClrEol,
 
 	// Extensions
+	NQ,
 	RGB,
 	AN,
 	AX,
@@ -564,6 +565,7 @@ var TableStrs = []*Cap{
 	Ss,
 	Rmxx,
 	Smxx,
+	Csl,
 	KDC3,
 	KDC4,
 	KDC5,

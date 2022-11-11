@@ -4,7 +4,7 @@
 package caps
 
 // CursesVersion is the version of curses this data was generated with, as [implementation]-[version].
-const CursesVersion = `ncurses-6.2.20211009`
+const CursesVersion = `ncurses-6.3.20221105`
 
 // Cap represents a capability as listed in a terminfo file.
 type Cap struct {
@@ -515,6 +515,7 @@ var (
 	// Extentions
 	CO     = &Cap{`CO`, `userdef`, `number of indexed colors overlaying RGB space (ncurses)`}
 	E3     = &Cap{`E3`, `userdef`, `clears the terminal's scrollback buffer. (ncurses)`}
+	NQ     = &Cap{`NQ`, `userdef`, `terminal does not support query/response (ncurses)`}
 	RGB    = &Cap{`RGB`, `userdef`, `use direct colors with 1/3 of color-pair bits per color. (ncurses)`}
 	TS     = &Cap{`TS`, `userdef`, `like "tsl", but uses no parameter. (ncurses)`}
 	U8     = &Cap{`U8`, `userdef`, `terminal does/does not support VT100 SI/SO when processing UTF-8 encoding. (ncurses)`}
@@ -555,6 +556,7 @@ var (
 	Ss     = &Cap{`Ss`, `userdef`, `change the cursor style. (tmux)`}
 	Rmxx   = &Cap{`rmxx`, `userdef`, `reset ECMA-48 strikeout/crossed-out attributes. (tmux)`}
 	Smxx   = &Cap{`smxx`, `userdef`, `set ECMA-48 strikeout/crossed-out attributes. (tmux)`}
+	Csl    = &Cap{`csl`, `userdef`, `clear status line (xterm)`}
 	KDC3   = &Cap{`kDC3`, `userdef`, `alt delete-character (xterm)`}
 	KDC4   = &Cap{`kDC4`, `userdef`, `shift+alt delete-character (xterm)`}
 	KDC5   = &Cap{`kDC5`, `userdef`, `control delete-character (xterm)`}

@@ -5,7 +5,7 @@ package keys
 import "zgo.at/termfo/caps"
 
 // CursesVersion is the version of curses this data was generated with, as [implementation]-[version].
-const CursesVersion = `ncurses-6.2.20211009`
+const CursesVersion = `ncurses-6.3.20221105`
 
 // Keys maps caps.Cap to Key constants
 var Keys = map[*caps.Cap]Key{
@@ -29,6 +29,7 @@ var Keys = map[*caps.Cap]Key{
 	caps.TableStrs[82]:  PageUp,
 	caps.TableStrs[83]:  Right,
 	caps.TableStrs[87]:  Up,
+	caps.TableStrs[148]: BackTab,
 	caps.TableStrs[164]: End,
 	caps.TableStrs[165]: Enter,
 	caps.TableStrs[172]: Next,
@@ -147,6 +148,7 @@ const (
 	Sdl
 	Screate
 	PageUp
+	BackTab
 	Replace
 	Soptions
 	Sprevious
@@ -219,6 +221,7 @@ var keyNames = map[Key]string{
 	Sdl:       `Sdl`,
 	Screate:   `Screate`,
 	PageUp:    `PageUp`,
+	BackTab:   `BackTab`,
 	Replace:   `Replace`,
 	Soptions:  `Soptions`,
 	Sprevious: `Sprevious`,

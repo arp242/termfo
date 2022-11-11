@@ -287,21 +287,21 @@ func toNum(read []byte, intSize int) []int32 {
 // modifier is used the character after the CSI is replaced with a modifier code
 // or inserted before the final ~. For example (CSI prefix omitted):
 //
-//             F1     F5     Up
-//  Regular     OP   15~      OA
-//  Ctrl      1;5P   15;5~  1;5A
-//  Shift     1;2P   15;2~  1;2A
-//  Alt       1;3P   15;3~  1;3A
+//	            F1     F5     Up
+//	Regular     OP   15~      OA
+//	Ctrl      1;5P   15;5~  1;5A
+//	Shift     1;2P   15;2~  1;2A
+//	Alt       1;3P   15;3~  1;3A
 //
 // Modifier codes:
 //
-//   2   Shift
-//   3   Alt
-//   4   Shift + Alt
-//   5   Ctrl
-//   6   Shift + Ctrl
-//   7   Alt + Ctrl
-//   8   Shift + Alt + Ctrl
+//	2   Shift
+//	3   Alt
+//	4   Shift + Alt
+//	5   Ctrl
+//	6   Shift + Ctrl
+//	7   Alt + Ctrl
+//	8   Shift + Alt + Ctrl
 //
 // We don't do anything with meta.
 //
