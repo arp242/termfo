@@ -4,6 +4,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	"zgo.at/termfo/cmd/termfo/internal/term"
 )
@@ -24,7 +25,7 @@ Commands:
 // build     [pkg] [terms..]  Generate a Go file for package [pkg] with terminals to compile in.
 //                            Use '%common' for a list of common terminals in use today.
 
-func fatalf(f string, a ...interface{}) {
+func fatalf(f string, a ...any) {
 	fmt.Fprintf(os.Stderr, f+"\n", a...)
 	os.Exit(1)
 }
@@ -70,7 +71,28 @@ func main() {
 		if len(os.Args) <= 2 {
 			fatalf("need a cap name")
 		}
-		termWithCap(os.Args[2])
+		var (
+			hist, expand bool
+			capName      string
+		)
+		for _, a := range os.Args[2:] {
+			if len(a) > 0 && a[0] == '-' {
+				switch strings.TrimLeft(a, "-") {
+				case "o", "old":
+					hist = true
+				case "e", "expand":
+					expand = true
+				default:
+					fatalf("unknown flag: %q", a)
+				}
+				continue
+			}
+			if capName != "" {
+				fatalf("can only show one capability")
+			}
+			capName = a
+		}
+		termWithCap(capName, hist, expand)
 	//case "build":
 	//	if len(os.Args) <= 2 {
 	//		fatalf("need a package name to use")

@@ -67,9 +67,7 @@ func fmtTerminfo(ti *termfo.Terminfo) string {
 		strings.Repeat("─", 22),
 	)
 	for _, k := range all {
-		var (
-			val string
-		)
+		var val string
 		if _, ok := ti.Bools[k]; ok {
 			val = "True"
 		} else if v, ok := ti.Numbers[k]; ok {
@@ -97,14 +95,6 @@ func fmtTerminfo(ti *termfo.Terminfo) string {
 				fmt.Fprintf(b, "%-37s │ %s │\n", " ", hi(fmt.Sprintf("%-26s", p)))
 			}
 		}
-	}
-
-	// Mostly because GNU cut is stuck in 1990:
-	//
-	//   % termfo show|cat | cut -d '│' -f3
-	//   cut: the delimiter must be a single character
-	if !isTerm {
-		return strings.ReplaceAll(b.String(), "│", "|")
 	}
 	return b.String()
 }

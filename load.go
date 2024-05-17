@@ -226,9 +226,24 @@ func readTi(fp *os.File) (*Terminfo, error) {
 		name := string(extData.strTbl[s:e])
 
 		var c *caps.Cap
-		// TODO: Find the defined extended ones.
 		// TODO: it list AX and G0 in the file, but infocmp lists it as OTbs and
 		// OTpt? Hmm. Not sure where it gets that from.
+		for _, v := range caps.TableStrs {
+			if v.Short == name {
+				c = v
+				break
+			}
+		}
+		if c == nil {
+			for _, v := range caps.TableNums {
+				c = v
+			}
+		}
+		if c == nil {
+			for _, v := range caps.TableBools {
+				c = v
+			}
+		}
 		if c == nil {
 			c = &caps.Cap{Short: name, Long: name, Desc: "extended user-defined"}
 		}
@@ -260,7 +275,7 @@ func align(n int16) int {
 	return 0
 }
 
-func readM(fp *os.File, data ...interface{}) error {
+func readM(fp *os.File, data ...any) error {
 	for _, d := range data {
 		if err := binary.Read(fp, binary.LittleEndian, d); err != nil {
 			return err

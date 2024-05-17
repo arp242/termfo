@@ -9,7 +9,12 @@ import (
 	"zgo.at/termfo/caps"
 )
 
-func termWithCap(name string) {
+func historical(term string) bool {
+	_, ok := oldterm[term]
+	return ok
+}
+
+func termWithCap(name string, inclHist, expand bool) {
 	c := findCap(name)
 	if c == nil {
 		fatalf("no cap: %q", name)
@@ -17,6 +22,9 @@ func termWithCap(name string) {
 
 	list := make(map[string][]string)
 	for _, a := range allInfos("") {
+		if !inclHist && historical(a) {
+			continue
+		}
 		ti, err := termfo.New(a)
 		if err != nil {
 			fatalf(a, "\t", err)
@@ -25,6 +33,8 @@ func termWithCap(name string) {
 
 		if v, ok := findCapInTi(ti, c); ok {
 			list[v] = append(list[v], a)
+		} else {
+			//list["[not-supported]"] = append(list["[not-supported]"], a)
 		}
 	}
 	type termWithCap struct {
@@ -35,15 +45,19 @@ func termWithCap(name string) {
 	pad := 0
 	for k, v := range list {
 		k = fmt.Sprintf("%q", k)
-		order = append(order, termWithCap{
-			cap:   k,
-			terms: dedup(v),
-		})
+		vv := v
+		if !expand {
+			vv = dedup(v)
+		}
+		order = append(order, termWithCap{cap: k, terms: vv})
 		if len(k) > pad {
 			pad = len(k)
 		}
 	}
-	sort.Slice(order, func(i, j int) bool { return len(order[i].terms) > len(order[j].terms) })
+	if pad > 60 { // Some have ridiculously long escapes
+		pad = 60
+	}
+	sort.SliceStable(order, func(i, j int) bool { return len(order[i].terms) > len(order[j].terms) })
 
 	w := 100
 	pad += 4
@@ -52,13 +66,13 @@ func termWithCap(name string) {
 	fmt.Printf("Capability %q / %q: %s\n\n", c.Short, c.Long, c.Desc)
 	for _, o := range order {
 		p := o.terms[0]
-		l := len(p)
+		l := pad
 		for _, vv := range o.terms[1:] {
 			if l > w {
 				p += "\n" + strings.Repeat(" ", pad+7) + vv
-				l = len(vv) + 2
+				l = pad + len(vv) + 0
 			} else {
-				p += ", " + vv
+				p += " " + vv
 				l += len(vv) + 2
 			}
 		}
@@ -89,17 +103,16 @@ func findCap(name string) *caps.Cap {
 }
 
 func findCapInTi(ti *termfo.Terminfo, c *caps.Cap) (string, bool) {
-	v, ok := ti.Strings[c]
-	if ok {
+	if v, ok := ti.Strings[c]; ok {
 		return v, ok
 	}
-	v2, ok := ti.Numbers[c]
-	if ok {
+	if v2, ok := ti.Numbers[c]; ok {
 		return fmt.Sprintf("%v", v2), ok
 	}
-
-	v3, ok := ti.Bools[c]
-	return fmt.Sprintf("%v", v3), ok
+	if _, ok := ti.Bools[c]; ok {
+		return fmt.Sprintf("%v", ok), ok
+	}
+	return "", false
 }
 
 // List xterm, xterm-256color, xterm-mono, etc. as xterm*; no need to list them
