@@ -6,7 +6,7 @@ package scaps
 import "zgo.at/termfo/caps"
 
 // CursesVersion is the version of curses this data was generated with, as [implementation]-[version].
-const CursesVersion = `ncurses-6.3.20221105`
+const CursesVersion = `ncurses-6.5.20240511`
 
 var (
 	Bw       = caps.AutoLeftMargin
@@ -551,6 +551,17 @@ var (
 	Ss     = caps.Ss
 	Rmxx   = caps.Rmxx
 	Smxx   = caps.Smxx
+	BD     = caps.BD
+	BE     = caps.BE
+	PE     = caps.PE
+	PS     = caps.PS
+	RV     = caps.RV
+	XR     = caps.XR
+	XF     = caps.XF
+	Fd     = caps.Fd
+	Fe     = caps.Fe
+	Rv     = caps.Rv
+	Xr     = caps.Xr
 	Csl    = caps.Csl
 	KDC3   = caps.KDC3
 	KDC4   = caps.KDC4
@@ -608,4 +619,6 @@ var (
 	Kb1    = caps.Kb1
 	Kb3    = caps.Kb3
 	Kc2    = caps.Kc2
+	KxIN   = caps.KxIN
+	KxOUT  = caps.KxOUT
 )

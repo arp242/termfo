@@ -4,7 +4,7 @@
 package caps
 
 // CursesVersion is the version of curses this data was generated with, as [implementation]-[version].
-const CursesVersion = `ncurses-6.3.20221105`
+const CursesVersion = `ncurses-6.5.20240511`
 
 // Cap represents a capability as listed in a terminfo file.
 type Cap struct {
@@ -172,8 +172,8 @@ var (
 	KeySr                  = &Cap{`kri`, `key_sr`, `scroll-backward key`}
 	KeyStab                = &Cap{`khts`, `key_stab`, `set-tab key`}
 	KeyUp                  = &Cap{`kcuu1`, `key_up`, `up-arrow key`}
-	KeypadLocal            = &Cap{`rmkx`, `keypad_local`, `leave 'keyboard_transmit' mode`}
-	KeypadXmit             = &Cap{`smkx`, `keypad_xmit`, `enter 'keyboard_transmit' mode`}
+	KeypadLocal            = &Cap{`rmkx`, `keypad_local`, `leave keyboard transmit mode`}
+	KeypadXmit             = &Cap{`smkx`, `keypad_xmit`, `enter keyboard transmit mode`}
 	LabF0                  = &Cap{`lf0`, `lab_f0`, `label on function key f0 if not f0`}
 	LabF1                  = &Cap{`lf1`, `lab_f1`, `label on function key f1 if not f1`}
 	LabF10                 = &Cap{`lf10`, `lab_f10`, `label on function key f10 if not f10`}
@@ -355,7 +355,7 @@ var (
 	KeyF63                 = &Cap{`kf63`, `key_f63`, `F63 function key`}
 	ClrBol                 = &Cap{`el1`, `clr_bol`, `Clear to beginning of line`}
 	ClearMargins           = &Cap{`mgc`, `clear_margins`, `clear right and left soft margins`}
-	SetLeftMargin          = &Cap{`smgl`, `set_left_margin`, `set left soft margin at current column. (ML is not in BSD termcap).`}
+	SetLeftMargin          = &Cap{`smgl`, `set_left_margin`, `set left soft margin at current column (not in BSD \fItermcap\fP)`}
 	SetRightMargin         = &Cap{`smgr`, `set_right_margin`, `set right soft margin at current column`}
 	LabelFormat            = &Cap{`fln`, `label_format`, `label format`}
 	SetClock               = &Cap{`sclk`, `set_clock`, `set clock, #1 hrs #2 mins #3 secs`}
@@ -446,7 +446,7 @@ var (
 	SetAForeground         = &Cap{`setaf`, `set_a_foreground`, `Set foreground color to #1, using ANSI escape`}
 	SetABackground         = &Cap{`setab`, `set_a_background`, `Set background color to #1, using ANSI escape`}
 	PkeyPlab               = &Cap{`pfxl`, `pkey_plab`, `Program function key #1 to type string #2 and show string #3`}
-	DeviceType             = &Cap{`devt`, `device_type`, `Indicate language/codeset support`}
+	DeviceType             = &Cap{`devt`, `device_type`, `Indicate language, codeset support`}
 	CodeSetInit            = &Cap{`csin`, `code_set_init`, `Init sequence for multiple codesets`}
 	Set0DesSeq             = &Cap{`s0ds`, `set0_des_seq`, `Shift to codeset 0 (EUC set 0, ASCII)`}
 	Set1DesSeq             = &Cap{`s1ds`, `set1_des_seq`, `Shift to codeset 1`}
@@ -556,6 +556,17 @@ var (
 	Ss     = &Cap{`Ss`, `userdef`, `change the cursor style. (tmux)`}
 	Rmxx   = &Cap{`rmxx`, `userdef`, `reset ECMA-48 strikeout/crossed-out attributes. (tmux)`}
 	Smxx   = &Cap{`smxx`, `userdef`, `set ECMA-48 strikeout/crossed-out attributes. (tmux)`}
+	BD     = &Cap{`BD`, `userdef`, `disables bracketed paste (vim)`}
+	BE     = &Cap{`BE`, `userdef`, `enables bracketed paste (vim)`}
+	PE     = &Cap{`PE`, `userdef`, `is sent after pasted text (vim)`}
+	PS     = &Cap{`PS`, `userdef`, `is sent before pasted text (vim)`}
+	RV     = &Cap{`RV`, `userdef`, `report terminal secondary device attributes (vim)`}
+	XR     = &Cap{`XR`, `userdef`, `report terminal version as a free-format string. (vim)`}
+	XF     = &Cap{`XF`, `userdef`, `terminal supports xterm focus in/out (vim)`}
+	Fd     = &Cap{`fd`, `userdef`, `disable xterm focus-events (vim)`}
+	Fe     = &Cap{`fe`, `userdef`, `enable xterm focus-events (vim)`}
+	Rv     = &Cap{`rv`, `userdef`, `response to RV, regular expression (vim)`}
+	Xr     = &Cap{`xr`, `userdef`, `response to XR, regular expression (vim)`}
 	Csl    = &Cap{`csl`, `userdef`, `clear status line (xterm)`}
 	KDC3   = &Cap{`kDC3`, `userdef`, `alt delete-character (xterm)`}
 	KDC4   = &Cap{`kDC4`, `userdef`, `shift+alt delete-character (xterm)`}
@@ -613,4 +624,6 @@ var (
 	Kb1    = &Cap{`kb1`, `userdef`, `vt220-keypad extensions (xterm)`}
 	Kb3    = &Cap{`kb3`, `userdef`, `vt220-keypad extensions (xterm)`}
 	Kc2    = &Cap{`kc2`, `userdef`, `vt220-keypad extensions (xterm)`}
+	KxIN   = &Cap{`kxIN`, `userdef`, `mouse response on focus-in (xterm)`}
+	KxOUT  = &Cap{`kxOUT`, `userdef`, `mouse response on focus-out (xterm)`}
 )

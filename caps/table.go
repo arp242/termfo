@@ -57,6 +57,7 @@ var TableBools = []*Cap{
 	G0,
 	TF,
 	XT,
+	XF,
 }
 
 var TableNums = []*Cap{
@@ -565,6 +566,16 @@ var TableStrs = []*Cap{
 	Ss,
 	Rmxx,
 	Smxx,
+	BD,
+	BE,
+	PE,
+	PS,
+	RV,
+	XR,
+	Fd,
+	Fe,
+	Rv,
+	Xr,
 	Csl,
 	KDC3,
 	KDC4,
@@ -622,4 +633,6 @@ var TableStrs = []*Cap{
 	Kb1,
 	Kb3,
 	Kc2,
+	KxIN,
+	KxOUT,
 }

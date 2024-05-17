@@ -5,7 +5,7 @@ package keys
 import "zgo.at/termfo/caps"
 
 // CursesVersion is the version of curses this data was generated with, as [implementation]-[version].
-const CursesVersion = `ncurses-6.3.20221105`
+const CursesVersion = `ncurses-6.5.20240511`
 
 // Keys maps caps.Cap to Key constants
 var Keys = map[*caps.Cap]Key{
