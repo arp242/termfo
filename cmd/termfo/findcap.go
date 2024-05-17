@@ -14,7 +14,7 @@ func historical(term string) bool {
 	return ok
 }
 
-func termWithCap(name string, inclHist, expand bool) {
+func termWithCap(name string, inclHist, expand, notSupported bool) {
 	c := findCap(name)
 	if c == nil {
 		fatalf("no cap: %q", name)
@@ -33,8 +33,8 @@ func termWithCap(name string, inclHist, expand bool) {
 
 		if v, ok := findCapInTi(ti, c); ok {
 			list[v] = append(list[v], a)
-		} else {
-			//list["[not-supported]"] = append(list["[not-supported]"], a)
+		} else if notSupported {
+			list["[not-supported]"] = append(list["[not-supported]"], a)
 		}
 	}
 	type termWithCap struct {

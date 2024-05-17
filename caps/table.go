@@ -2,6 +2,8 @@
 
 package caps
 
+var unused *Cap = nil
+
 var TableBools = []*Cap{
 	AutoLeftMargin,
 	AutoRightMargin,

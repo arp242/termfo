@@ -18,8 +18,18 @@ Commands:
     ls-cap    [glob]           List capabilities.
     show      [term] [term...] Show terminfo for term; defaults to TERM if none
                                given. Use "all" to list all terminfo files.
-    find-cap  [cap cap..]      Show all terminals with these capabilities.
     keyscan                    Scan for keys.
+    find-cap  [cap cap..]      Show all terminals with these capabilities.
+
+                               Flags:
+                                 -o, -old
+                                      Also show (very) old terminals.
+                                 -e, -expand
+                                      Show every terminfo name, rather than
+                                      grouping by prefix.
+                                 -n, -not, -not-supported
+                                      Also show terminals that don't support
+                                      this cap at all.
 `
 
 // build     [pkg] [terms..]  Generate a Go file for package [pkg] with terminals to compile in.
@@ -72,8 +82,8 @@ func main() {
 			fatalf("need a cap name")
 		}
 		var (
-			hist, expand bool
-			capName      string
+			hist, expand, notSup bool
+			capName              string
 		)
 		for _, a := range os.Args[2:] {
 			if len(a) > 0 && a[0] == '-' {
@@ -82,6 +92,8 @@ func main() {
 					hist = true
 				case "e", "expand":
 					expand = true
+				case "n", "not", "not-supported":
+					notSup = true
 				default:
 					fatalf("unknown flag: %q", a)
 				}
@@ -92,7 +104,7 @@ func main() {
 			}
 			capName = a
 		}
-		termWithCap(capName, hist, expand)
+		termWithCap(capName, hist, expand, notSup)
 	//case "build":
 	//	if len(os.Args) <= 2 {
 	//		fatalf("need a package name to use")

@@ -50,6 +50,150 @@ pkg() {
 	return 0
 }
 
+cap_ignore=$(<<-'EOF'
+		BEGIN {
+			ignore["tilde_glitch"]              = 1 # Hacks for ancient hardware terms.
+			ignore["eat_newline_glitch"]        = 1
+			ignore["insert_null_glitch"]        = 1
+			ignore["col_addr_glitch"]           = 1
+			ignore["row_addr_glitch"]           = 1
+			ignore["magic_cookie_glitch"]       = 1
+			ignore["magic_cookie_glitch_ul"]    = 1
+			ignore["ceol_standout_glitch"]      = 1
+			ignore["hard_cursor"]               = 1
+			ignore["no_esc_ctlc"]               = 1
+			ignore["new_line_delay"]            = 1
+			ignore["carriage_return_delay"]     = 1
+			ignore["no_correctly_working_cr"]   = 1
+			ignore["crt_no_scrolling"]          = 1
+			ignore["linefeed_if_not_lf"]        = 1
+			ignore["backspace_if_not_bs"]       = 1
+			ignore["linefeed_is_newline"]       = 1
+			ignore["backspace_delay"]           = 1
+			ignore["horizontal_tab_delay"]      = 1
+			ignore["other_non_function_keys"]   = 1
+			ignore["number_of_function_keys"]   = 1
+			ignore["arrow_key_map"]             = 1
+			ignore["return_does_clr_eol"]       = 1
+			ignore["dest_tabs_magic_smso"]      = 1
+			ignore["non_dest_scroll_region"]    = 1
+			ignore["non_rev_rmcup"]             = 1
+			ignore["padding_baud_rate"]         = 1
+			ignore["has_print_wheel"]           = 1 # No vaguely modern terminal has this.
+			ignore["set_left_margin"]           = 1
+			ignore["set_right_margin"]          = 1
+			ignore["set_bottom_margin"]         = 1
+			ignore["set_bottom_margin_parm"]    = 1
+			ignore["set_top_margin"]            = 1
+			ignore["set_top_margin_parm"]       = 1
+			ignore["set_tb_margin"]             = 1
+			ignore["order_of_pins"]             = 1
+			ignore["lines_of_memory"]           = 1
+			ignore["output_res_char"]           = 1
+			ignore["output_res_line"]           = 1
+			ignore["wide_char_size"]            = 1
+			ignore["enter_doublewide_mode"]     = 1
+			ignore["exit_doublewide_mode"]      = 1
+			ignore["hue_lightness_saturation"]  = 1
+			ignore["fixed_pause"]               = 1
+			ignore["hangup"]                    = 1
+			ignore["dial_phone"]                = 1
+			ignore["pulse"]                     = 1
+			ignore["flash_hook"]                = 1
+			ignore["quick_dial"]                = 1
+			ignore["wait_tone"]                 = 1
+			ignore["tone"]                      = 1
+			ignore["set_clock"]                 = 1
+			ignore["display_clock"]             = 1
+			ignore["remove_clock"]              = 1
+			ignore["create_window"]             = 1
+			ignore["goto_window"]               = 1
+			ignore["set_window"]                = 1
+			ignore["maximum_windows"]           = 1
+			ignore["number_of_pins"]            = 1
+			ignore["plab_norm"]                 = 1
+			ignore["label_format"]              = 1
+			ignore["num_labels"]                = 1
+			ignore["label_height"]              = 1
+			ignore["label_width"]               = 1
+			ignore["label_on"]                  = 1
+			ignore["label_off"]                 = 1
+			ignore["lab_f0"]                    = 1
+			ignore["lab_f1"]                    = 1
+			ignore["lab_f10"]                   = 1
+			ignore["lab_f2"]                    = 1
+			ignore["lab_f3"]                    = 1
+			ignore["lab_f4"]                    = 1
+			ignore["lab_f5"]                    = 1
+			ignore["lab_f6"]                    = 1
+			ignore["lab_f7"]                    = 1
+			ignore["lab_f8"]                    = 1
+			ignore["lab_f9"]                    = 1
+			ignore["semi_auto_right_margin"]    = 1
+			ignore["enter_draft_quality"] = 1
+			ignore["enter_near_letter_quality"] = 1
+			ignore["enter_normal_quality"] = 1
+			ignore["generic_type"] = 1
+			ignore["set_left_margin_parm"]      = 1 # Setting margins kind-of in e.g. xterm, but it's pretty broken and useless.
+			ignore["set_right_margin_parm"]     = 1
+			ignore["set_lr_margin"]             = 1
+			ignore["clear_margins"]             = 1
+			ignore["auto_left_margin"]          = 1 # I can't figure out what these "automatic margins" do, or how they work. So I'm going to guess it's not really useful.
+			ignore["auto_right_margin"]         = 1
+			ignore["enter_am_mode"]             = 1
+			ignore["exit_am_mode"]              = 1
+			ignore["cr_cancels_micro_mode"]     = 1 # "Micro mode", whatever that is; only on QNX 4.
+			ignore["max_micro_address"]         = 1
+			ignore["max_micro_jump"]            = 1
+			ignore["micro_col_size"]            = 1
+			ignore["micro_line_size"]           = 1
+			ignore["enter_micro_mode"]          = 1
+			ignore["exit_micro_mode"]           = 1
+			ignore["micro_column_address"]      = 1
+			ignore["micro_down"]                = 1
+			ignore["micro_left"]                = 1
+			ignore["micro_right"]               = 1
+			ignore["micro_row_address"]         = 1
+			ignore["micro_up"]                  = 1
+			ignore["parm_down_micro"]           = 1
+			ignore["parm_left_micro"]           = 1
+			ignore["parm_right_micro"]          = 1
+			ignore["parm_up_micro"]             = 1
+			ignore["prtr_silent"]               = 1 # Printer support; no one has that.
+			ignore["prtr_non"]                  = 1
+			ignore["set_pglen_inch"]            = 1
+			ignore["change_char_pitch"]         = 1
+			ignore["change_line_pitch"]         = 1
+			ignore["output_res_horz_inch"]      = 1
+			ignore["output_res_vert_inch"]      = 1
+			ignore["dot_vert_spacing"]          = 1
+			ignore["dot_horz_spacing"]          = 1
+			ignore["buffer_capacity"]           = 1
+			ignore["print_rate"]                = 1
+			ignore["print_screen"]              = 1
+			ignore["prtr_off"]                  = 1
+			ignore["prtr_on"]                   = 1
+			ignore["prtr_non"]                  = 1
+			ignore["start_bit_image"]           = 1
+			ignore["stop_bit_image"]            = 1
+			ignore["these_cause_cr"]            = 1
+			ignore["hard_copy"]                 = 1
+			ignore["bit_image_entwining"]       = 1 # Not supported by anything.
+			ignore["bit_image_type"]            = 1
+			ignore["bit_image_repeat"]          = 1
+			ignore["bit_image_newline"]         = 1
+			ignore["bit_image_carriage_return"] = 1
+			ignore["define_bit_image_region"]   = 1
+			ignore["end_bit_image_region"]      = 1
+
+			# dsl / disable_status_line
+			# kitty = clear window title
+
+			names[""] = ""
+		}
+EOF
+)
+
 # Generate caps/caps.go
 caps() {
 	pkg caps 'contains a list of all terminfo capabilities.'
@@ -63,9 +207,15 @@ caps() {
 	EOF
 
 	print "var ("
-	awk <$src/include/Caps "$funs $(<<-'EOF'
+	awk <$src/include/Caps "$funs $cap_ignore $(<<-'EOF'
 		/^[^#]/ {
-			printf "\t%s = &Cap{`%s`, `%s`, `%s", camelCase($1), $2, $1, $8
+			# TODO: breaks too much
+			# if (ignore[$1] != "" || match($1, "^key_"))
+			# 	next
+			name = names[$1]
+			if (name == "")
+				name = camelCase($1)
+			printf "\t%s = &Cap{`%s`, `%s`, `%s", name, $2, $1, $8
 			for (i=9; i<=NF; i++)
 				printf " %s", $i
 			print "`}"
@@ -74,7 +224,7 @@ caps() {
 	)"
 
 	print '\n// Extentions'
-	awk <$src/include/Caps-ncurses "$funs $(<<-'EOF'
+	awk <$src/include/Caps-ncurses "$funs $cap_ignore $(<<-'EOF'
 		$1 == "used_by" { used_by = $2 }
 		$1 == "userdef" {
 			# Some entries are listed more than once (xm and RGB).
@@ -122,19 +272,26 @@ scaps() {
 # Generate caps/table.go
 caps_table() {
 	pkg caps '' '' 'no-version'
+	print "var unused *Cap = nil\n"
 
 	for t in bool num str; do
 		tu=${t[1]:u}${t[2,-1]}
 		print "var Table${tu}s = []*Cap{"
-		awk <$src/include/Caps "$funs ${$(<<-'EOF'
+		awk <$src/include/Caps "$funs $cap_ignore ${$(<<-'EOF'
 			/^[^#]/ && $3 == "TYPE" {
-				print camelCase($1) ","
+				name = names[$1]
+				if (name == "")
+					name = camelCase($1)
+				# TODO: breaks too much
+				# if (ignore[$1] != "" || match($1, "^key_"))
+				# 	name = "unused"
+				print name ","
 			}
 		EOF
 		)//TYPE/$t}"
 
 		print '\n// Extensions'
-		awk <$src/include/Caps-ncurses "$funs ${$(<<-'EOF'
+		awk <$src/include/Caps-ncurses "$funs $cap_ignore ${$(<<-'EOF'
 			$1 == "userdef" && $3 == "TYPE" {
 				print camelCase($2) ","
 			}
@@ -147,84 +304,80 @@ caps_table() {
 # List all key caps.
 keys() {
 	pkg keys '' 'import "zgo.at/termfo/caps"'
+	# pkg keys '' ''
 
 	awk <$src/include/Caps "$funs $(<<-'EOF'
 		BEGIN {
 			print "// Keys maps caps.Cap to Key constants"
 			print "var Keys = map[*caps.Cap]Key{"
+			# print "var Keys = map[Key]string{"
 			i = -1
 
-			# Obscure keys present on very old devices; most people have heard of
-			# neither those devices nor these keys, so there's not much point
-			# including them. Can still use the termCaps if you really want to, just
-			# don't need a shortcut for them.
+			# Obscure keys present on very old devices; most people have neither
+			# heard nor used any of these devices or keys, so there's not much
+			# point including them. Can still use the termCaps if you really
+			# want to, just don't need a shortcut for them.
 			#
 			# Some of these are still useful codes to send, but they're just not
 			# keys (anymore).
 			#
 			# Use ./cmd/termfo to print terminals which have a certain capability.
-			ignore["Catab"]   = "ClearAllTabs"
-			ignore["Ctab"]    = "ClearTab"
-			ignore["Dl"]      = "DeleteLine"
-			ignore["Eic"]     = "Eic"                 # Sent by rmir or smir in insert mode
-			ignore["Eol"]     = "ClearToEOL"          # \E[2K
-			ignore["Eos"]     = "ClearToEndOfScreen"  # \E[0J
-			ignore["Il"]      = "InsertLine"
-			ignore["Sr"]      = "ScrollBackward"      # \E[1;2A, or Shift+Up; don't need an entry for this.
-			ignore["Sf"]      = "ScrollForward"       # \E[1;2B, or Shift+Down
-			ignore["Clear"]   = "ClearScreen"         # \E[2J
-			ignore["F0"]      = "F0"
-			ignore["Ll"]      = "LowerLeft"           # "Home down"
-			ignore["Stab"]    = "SetTab"
-			ignore["A1"]      = "KeypadUpperLeft"
-			ignore["A3"]      = "KeypadUpperRight"
-			ignore["B2"]      = "KeypadCenter"
-			ignore["C1"]      = "KeypadLowerLeft"
-			ignore["C3"]      = "KeypadLowerRight"
-			ignore["Beg"]     = "Begin"
-			ignore["Cancel"]  = "Cancel"
-			ignore["Close"]   = "Close"
-			ignore["Command"] = "Command"             # Not the macOS Command modifier.
-			ignore["Copy"]    = "Copy"
-			ignore["Create"]  = "Create"
-			ignore["Exit"]    = "Exit"
-			ignore["Find"]    = "Find"
-			ignore["Help"]    = "Help"
-			ignore["Mark"]    = "Mark"
-			ignore["Message"] = "Message"
-			ignore["Move"]    = "Move"
-			ignore["KeyNext"] = "x"
-			ignore["KeyOpen"] = "x"
-			ignore["KeyOptions"] = "x"
-			ignore["KeyPrevious"] = "x"
-			ignore["KeyPrint"] = "x"
-			ignore["KeyRedo"] = "x"
-			ignore["KeyReference"] = "x"
-			ignore["KeyRefresh"] = "x"
-			ignore["KeyReplace"] = "x"
-			ignore["KeyRestart"] = "x"
-			ignore["KeyResume"] = "x"
-			ignore["KeySave"] = "x"
-			ignore["KeySuspend"] = "x"
-			ignore["KeyUndo"] = "x"
-			ignore["KeySbeg"] = "x"
-			ignore["KeyScancel"] = "x"
-			ignore["KeyScommand"] = "x"
-			ignore["KeyScopy"] = "x"
-			ignore["KeyScreate"] = "x"
-			ignore["KeySdl"] = "x"
-			ignore["KeySelect"] = "x"
-
-			#ignore["KeySdc"] = "x"   # Shift+Delete
-			#ignore["KeySend"] = "x"  # Shift end
-			#ignore["Enter"]   = ""
+			ignore["Catab"]     = 1
+			ignore["Ctab"]      = 1
+			ignore["Dl"]        = 1; ignore["Sdl"]        = 1
+			ignore["Eic"]       = 1
+			ignore["Eol"]       = 1; ignore["Seol"]       = 1
+			ignore["Eos"]       = 1
+			ignore["Il"]        = 1
+			ignore["Sr"]        = 1
+			ignore["Sf"]        = 1
+			ignore["Clear"]     = 1
+			ignore["F0"]        = 1
+			ignore["Ll"]        = 1
+			ignore["Stab"]      = 1
+			ignore["A1"]        = 1
+			ignore["A3"]        = 1
+			ignore["B2"]        = 1
+			ignore["C1"]        = 1
+			ignore["C3"]        = 1
+			ignore["Beg"]       = 1; ignore["Sbeg"]       = 1
+			ignore["Cancel"]    = 1; ignore["Scancel"]    = 1
+			ignore["Close"]     = 1; ignore["Close"]      = 1
+			ignore["Command"]   = 1; ignore["Scommand"]   = 1
+			ignore["Copy"]      = 1; ignore["Scopy"]      = 1
+			ignore["Create"]    = 1; ignore["Screate"]    = 1
+			ignore["Exit"]      = 1; ignore["Sexit"]      = 1
+			ignore["Find"]      = 1; ignore["Sfind"]      = 1
+			ignore["Help"]      = 1; ignore["Shelp"]      = 1
+			ignore["Mark"]      = 1; ignore["Smark"]      = 1
+			ignore["Message"]   = 1; ignore["Smessage"]   = 1
+			ignore["Move"]      = 1; ignore["Smove"]      = 1
+			ignore["Next"]      = 1; ignore["Snext"]      = 1
+			ignore["Open"]      = 1; ignore["Sopen"]      = 1
+			ignore["Options"]   = 1; ignore["Soptions"]   = 1
+			ignore["Save"]      = 1; ignore["Ssave"]      = 1
+			ignore["Previous"]  = 1; ignore["Sprevious"]  = 1
+			ignore["Print"]     = 1; ignore["Sprint"]     = 1
+			ignore["Redo"]      = 1; ignore["Sredo"]      = 1
+			ignore["Reference"] = 1; ignore["sreference"] = 1
+			ignore["Refresh"]   = 1; ignore["srefresh"]   = 1
+			ignore["Replace"]   = 1; ignore["Sreplace"]   = 1
+			ignore["Restart"]   = 1; ignore["srestart"]   = 1
+			ignore["Resume"]    = 1; ignore["Srsume"]     = 1
+			ignore["Suspend"]   = 1; ignore["Ssuspend"]   = 1
+			ignore["Undo"]      = 1; ignore["Sundo"]      = 1
+			ignore["Select"]    = 1; ignore["Sselect"]    = 1
 
 			# Rename some things for clarity.
-			rename["Ic"]    = "Insert"     # \E[2~
-			rename["Dc"]    = "Delete"     # \E[3~
-			rename["Ppage"] = "PageUp"     # \E[5~
-			rename["Npage"] = "PageDown"   # \E[6~
-			rename["Btab"]  = "BackTab"    # \E[Z (Shift+Tab)
+			rename["Ic"]     = "Insert"; rename["Sic"] = "ShiftInsert"
+			rename["Dc"]     = "Delete"; rename["Sdc"] = "ShiftDelete"
+			rename["Ppage"]  = "PageUp"
+			rename["Npage"]  = "PageDown"
+			rename["Btab"]   = "BackTab"
+			rename["Shome"]  = "ShiftHome"
+			rename["Send"]   = "ShiftEnd"
+			rename["Sleft"]  = "ShiftLeft"
+			rename["Sright"] = "ShiftRight"
 		}
 
 		/^[^#]/ && $3 == "str" {
@@ -235,11 +388,17 @@ keys() {
 			name = toupper(substr($1, 5, 1)) substr($1, 6)
 			if (ignore[name] != "")
 				next
-			if (match(name, /^F([2-9][0-9]|1[3-9])/))  # Who has 64 fucntion keys?!
+			if (match(name, /^F([2-9][0-9]|1[3-9])/))  # Who has 64 function keys?!
 				next
 			if (rename[name] != "")
 				name = rename[name]
 			allkeys[name] = ""
+
+			# TODO: should print:
+			# var Keys = map[Key]string{
+			# 	F1: "\x1bOP",
+			# }
+			# printf "\t%s: \"%s\",\n", name, "TODO"
 			printf "\tcaps.TableStrs[%d]: %s,\n", i, name
 		}
 

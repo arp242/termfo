@@ -68,10 +68,8 @@ func IsTerminal() bool {
 
 func Size() (int, int) {
 	var size struct {
-		Height uint16
-		Width  uint16
-		Xpixel uint16
-		Ypixel uint16
+		Height, Width  uint16
+		Xpixel, Ypixel uint16
 	}
 	_, _, err := syscall.Syscall(syscall.SYS_IOCTL, 0, syscall.TIOCGWINSZ, uintptr(unsafe.Pointer(&size)))
 	if err > 0 || size.Width <= 0 || size.Height <= 0 {
