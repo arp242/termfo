@@ -27,12 +27,9 @@ const (
 //   - First 32 bits   → rune (int32)
 //   - Next 16 bits    → Named key constant.
 //   - Bits 49-61      → Currently unused.
-//
-// And the last three bits are flags for modifier keys:
-//
-//   - bit 62          → Alt
-//   - bit 63          → Ctrl
-//   - bit 64          → Shift
+//   - Bit 62          → Alt
+//   - Bit 63          → Ctrl
+//   - Bit 64          → Shift
 //
 // The upshot of this is that you can now use a single value to test for all
 // combinations:
@@ -49,7 +46,7 @@ const (
 // Which is nicer than using two or three different variables to signal various
 // things.
 //
-// Letters are always in lower-case; the keys.Shift to test for upper case.
+// Letters are always in lower-case; use keys.Shift to test for upper case.
 //
 // Control sequences (0x00-0x1f, 0x1f), are used sent as key + Ctrl. So this:
 //

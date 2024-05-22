@@ -136,7 +136,7 @@ func main() {
 					dopr(k2, only(v[k2], "x10term", "xterm-r5", "xterm-r6", "xterm-old", "xterm-xf86", "xterm-xfree86",
 						"xterm-24", "vs100", "xterms", "xterm-new"))
 				case "XTERM Features":
-					dopr(k2, only(v[k2], "xterm-8bit", "xterm-vt52", "xterm1", "xterm-nic"))
+					dopr(k2, only(v[k2], "xterm-8bit", "xterm-vt52", "xterm1", "xterm-nic", "xterm-hp"))
 				case "Other XTERM":
 					dopr(k2, only(v[k2],
 						// Old xterm fork from before xterm supported ECMA-64 colors
@@ -144,7 +144,7 @@ func main() {
 						// Weird terminal with weird overrides.
 						"xterm-pcolor",
 						// xterm as distributes with late 90s Solaris.
-						"xtermc", "xtermm",
+						"xtermc", "xtermm", "xterm-sun", "xterms-sun",
 					))
 				case
 					// Old Xfree86 term, or something.
@@ -163,6 +163,8 @@ func main() {
 					// RXVT hasn't been updated in >20 years; no one ships it
 					// any more (e.g. on Debian it links to rxvt-unicode).
 					"RXVT",
+					// Not updated for ages; not packaged by Debian.
+					"MRXVT",
 					// Old emulator from 90s with support for Kanji
 					// https://ja.wikipedia.org/wiki/Kterm
 					"KTERM",

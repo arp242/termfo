@@ -513,7 +513,6 @@ var (
 	NQ     = caps.NQ
 	RGB    = caps.RGB
 	TS     = caps.TS
-	U8     = caps.U8
 	XM     = caps.XM
 	Grbom  = caps.Grbom
 	Gsbom  = caps.Gsbom
@@ -542,9 +541,7 @@ var (
 	XT     = caps.XT
 	Z0     = caps.Z0
 	Z1     = caps.Z1
-	Cr     = caps.Cr
 	Cs     = caps.Cs
-	Csr    = caps.Csr
 	Ms     = caps.Ms
 	Se     = caps.Se
 	Smulx  = caps.Smulx

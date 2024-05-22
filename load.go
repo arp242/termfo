@@ -322,7 +322,7 @@ func toNum(read []byte, intSize int) []int32 {
 //
 // You tell me why it works like this... My guess that in 19verylongago it was
 // easier to do some bit banging like this on a very simple terminal (by the
-// stnadard of the last 30 years anyway), and now we're still stuck with this.
+// standard of the last 30 years anyway), and now we're still stuck with this.
 //
 // See: https://invisible-island.net/xterm/ctlseqs/ctlseqs.pdf
 //
